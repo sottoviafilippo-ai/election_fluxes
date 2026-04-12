@@ -23,7 +23,6 @@ def simulate_election_2_given_election_1(election1, transfer_matrix: np.ndarray,
 # first number: abstention. second round between first two candidates in first round (and abstention!)
 means1 = np.array([0.4, 0.3, 0.2, 0.1])
 mat = np.array([[0.8, 0.03, 0.01, 0.5],[0.15, 0.95, 0.01, 0.3],[0.05, 0.02, 0.98, 0.2]])
-mat2 = np.array([[0.2, 0.53, 0.01, 0.5],[0.75, 0.45, 0.01, 0.3],[0.05, 0.02, 0.98, 0.2]])
 
 ele_1 = simulate_election_1(means1, nb_districts=100, precision=50)
 ele_2 = simulate_election_2_given_election_1(ele_1, mat, precision=100)
@@ -44,8 +43,6 @@ plt.show()
 """
 
 print(mat)
-print(ele_1)
-print(ele_2)
 # test particle swarm and genetic
 # print(PSO_optimization(ele_1, ele_2, nb_particles = 64))
 # print(genetic_optimization(ele_1, ele_2, nb_particles = 16, nb_iterations=1000, sig = 0.8))
@@ -53,47 +50,74 @@ print(ele_2)
 
 # none of both methods works...
 
-# TO DO: try with a neural network using pytorch 
+
+
+# ANOTHER APPROACH: try with a neural network using pytorch 
 # dando percentuali al 100% per un candidato all'elezione 1 dovrebbe dare i trasferimenti di voti
 
-# 1. Data Setup (Example: 100 samples of 3x2 inputs and 2x2 outputs)
-# Replace these with your actual lists of arrays
-list_a = [torch.randn(3, 2) for _ in range(100)]
-list_b = [torch.randn(2, 2) for _ in range(100)]
-
 # Convert lists to single tensors: (Batch, Height, Width)
-X = torch.stack(list_a)
-Y = torch.stack(list_b)
+X = torch.stack([torch.from_numpy(a) for a in ele_1]).float()
+Y = torch.stack([torch.from_numpy(a) for a in ele_2]).float()
 
 # Flatten the dimensions for a standard Linear layer
-# X_flat becomes (100, 6) | Y_flat becomes (100, 4)
 X_flat = X.view(X.size(0), -1)
 Y_flat = Y.view(Y.size(0), -1)
 
-# 2. Define Model
+# Define Model
 model = nn.Sequential(
     nn.Linear(X_flat.size(1), 32),
     nn.ReLU(),
     nn.Linear(32, Y_flat.size(1))
 )
 
-# 3. Training setup
+# Training setup
+# Adam: adaptive moment estimation. lr: initial step size
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-criterion = nn.MSELoss()
-
-# 4. Simple Training Loop
-for epoch in range(200):
+# the model enters the optimizer by model.parameters()
+criterion = nn.MSELoss() # use a mean squared error loss function
+loss_history = []
+# Simple Training Loop
+for epoch in range(100):
     optimizer.zero_grad()
     prediction = model(X_flat)
-    loss = criterion(prediction, Y_flat)
-    loss.backward()
-    optimizer.step()
+    loss = criterion(prediction, Y_flat.float())
+    loss.backward() # backpropagation
+    optimizer.step() # parameter update, new_param = old_param - eta*gradient 
+    # note that this works because prediction is a node in a dynamic computational graph
+    # prediction thus carries a reference to grad_fn, which is passed over to loss via the criterion
+    loss_history.append(loss.item())
 
-    if epoch % 50 == 0:
-        print(f"Epoch {epoch}, Loss: {loss.item():.4f}")
-
-# 5. Usage: Predict and reshape back to original target dimensions
-test_input = X_flat[0]
+# Now test what would happen with 100% for a condidate at a time
+test_input = torch.tensor([[1,0,0,0]]).float()
 predicted_flat = model(test_input)
-predicted_array = predicted_flat.view(2, 2) # Reshape back to target dimensions
-print("\nPredicted Array Shape:", predicted_array.shape)
+predicted_array = predicted_flat.view(-1) # Reshape back to target dimensions
+print(predicted_array.detach().numpy())
+
+test_input = torch.tensor([[0,1,0,0]]).float()
+predicted_flat = model(test_input)
+predicted_array = predicted_flat.view(-1) # Reshape back to target dimensions
+print(predicted_array.detach().numpy())
+
+test_input = torch.tensor([[0,0,1,0]]).float()
+predicted_flat = model(test_input)
+predicted_array = predicted_flat.view(-1) # Reshape back to target dimensions
+print(predicted_array.detach().numpy())
+
+test_input = torch.tensor([[0,0,0,1]]).float()
+predicted_flat = model(test_input)
+predicted_array = predicted_flat.view(-1) # Reshape back to target dimensions
+print(predicted_array.detach().numpy())
+
+# does not work, even gives negatives results
+
+
+"""plt.figure()
+plt.plot(loss_history)
+plt.title("Loss history (adam)")
+plt.show()"""
+
+# Gemini suggestion : have you considered a Softmax output layer with KLDivLoss (Kullback–Leibler divergence) instead of MSE
+
+# TO DO: EXPLORE KL
+
+# SEARCH FOR THE CLASSICAL ALGOS TO SOLVE THIS PROBLEM... 
