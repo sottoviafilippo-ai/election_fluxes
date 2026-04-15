@@ -69,10 +69,6 @@ def PSO_optimization(ele1, ele2, nb_particles = 16, nb_iterations = 5, w = 0.5, 
 
     return overall_best
 
-#eventual issue: high dimensionality of transfer matrices. to be checked
-# non converge, non si aggiornano mai le singole soluzioni. anche eliminando clip e la n rinormalizzazione. capire
-
-
 def genetic_optimization(ele1, ele2, nb_particles = 24, nb_iterations = 500, sig = 0.2):
     """ genetic optimization for families of nb_particles indiividal solutions"""
 

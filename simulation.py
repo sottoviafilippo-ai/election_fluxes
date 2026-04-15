@@ -21,6 +21,7 @@ def simulate_election_2_given_election_1(election1, transfer_matrix: np.ndarray,
     return np.array([simulate_voting_district(el1, transfer_matrix, precision=precision) for el1 in election1])
 
 # first number: abstention. second round between first two candidates in first round (and abstention!)
+# mat is a left-stochastic matrix
 means1 = np.array([0.4, 0.3, 0.2, 0.1])
 mat = np.array([[0.8, 0.03, 0.01, 0.5],[0.15, 0.95, 0.01, 0.3],[0.05, 0.02, 0.98, 0.2]])
 
