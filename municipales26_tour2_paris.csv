@@ -1,4 +1,4 @@
-Code BV;Inscrits;Votants;% Votants;Abstentions;% Abstentions;Exprimes;% Exprimes/inscrits;% Exprimes/votants;Blancs;% Blancs/inscrits;% Blancs/votants;Nuls;% Nuls/inscrits;% Nuls/votants;Nuance liste 1;Voix 1;% Voix/exprimes 1;Nuance liste 2;Voix 2;% Voix/exprimes 2;Nuance liste 3;Voix 3;% Voix/exprimes 3
+Code BV;Inscrits;Votants;perc Votants;Abstentions;perc Abstentions;Exprimes;perc Exprimes/inscrits;perc Exprimes/votants;Blancs;perc Blancs/inscrits;perc Blancs/votants;Nuls;perc Nuls/inscrits;perc Nuls/votants;Nuance liste 1;Voix 1;perc Voix/exprimes 1;Nuance liste 2;Voix 2;perc Voix/exprimes 2;Nuance liste 3;Voix 3;perc Voix/exprimes 3
 0101;1122;734;65.42;388;34.58;718;63.99;97.82;12;1.07;1.63;4;0.36;0.54;LUG;308;42.9;LUD;356;49.58;LFI;54.0;7.52
 0102;1217;750;61.63;467;38.37;741;60.89;98.8;7;0.58;0.93;2;0.16;0.27;LUG;371;50.07;LUD;340;45.88;LFI;30.0;4.05
 0103;1255;776;61.83;479;38.17;758;60.4;97.68;10;0.8;1.29;8;0.64;1.03;LUG;403;53.17;LUD;312;41.16;LFI;43.0;5.67
