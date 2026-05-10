@@ -9,6 +9,6 @@ These data include all French municipalities. Extracting the relevent data from 
 - The PSO.py file contains a class for particle-swarm optimization (PSO). Turns out it does not work well for ecological regression.
 - The simu_election.ipynb notebook contains some code to simulate, but for this goal they do not seem to be work properly for ecological regression. (at least in the way I coded them, I am open to imoprovement advice if you have any). Turns out constrained least squares with scipy.optimize.minimize works best.
 - The notebook select_data.ipynb selects the relevant Paris data from the csv files covering all French municipalities, escluding some useless test fields (and summing together the rresults of the three far-left parties in the first round)
-- The notebook plots_paris.ipynb plots some of the data to look for correlations and groups of polling booths with similar behaviour. It is quite evident (for instant looking at the second round behaviour of first round Bournzel voters) that one should at least consider two separate group: those where in the first round Dati prevailed, and those won by Grégoire in the first round.
-
+- The notebook plots_paris.ipynb plots some of the data to look for correlations and groups of polling booths with similar behaviour. It is quite evident (for instant looking at the second round behaviour of first round Bournzel voters) that one should at least consider two separate groups: those where in the first round Dati prevailed, and those won by Grégoire in the first round.
+In this notebook we also do the ecological regression and give a short analysis of the results.
 
